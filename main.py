@@ -7,7 +7,7 @@ product_list = [products.Product("MacBook Air M2", price=1450, quantity=100),
                 products.Product("Google Pixel 7", price=500, quantity=250)
                 ]
 best_buy = store.Store(product_list)
-
+print(best_buy)
 
 def start(my_store):
     """

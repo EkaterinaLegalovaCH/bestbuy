@@ -8,26 +8,48 @@ and so on
 class Product:
 
     def __init__(self, name, price, quantity):
-        self.name = name
-        self.price = price
-        self.quantity = quantity
+        try:
+            if name == "":
+                raise ValueError("Name of product can't be an empty string")
+            self.name = name
+        except ValueError as e:
+            print("Error: ", str(e))
+            self.name = None
+        try:
+            if price <= 0:
+                raise ValueError("Price should be > 0")
+            self.price = price
+        except ValueError as e:
+            print("Error: ", str(e))
+            self.price = 0
+        try:
+            if quantity <= 0:
+                raise ValueError("Quantity should be > 0")
+            self.quantity = quantity
+        except ValueError as e:
+            print("Error: ", str(e))
+            self.quantity = 0
         self.active = True
 
     def get_quantity(self):
         if self.quantity == 0:
-            self.deactivate()
+            return self.deactivate()
         return float(self.quantity)
 
     def set_quantity(self, quantity):
         self.quantity = quantity
         if self.quantity > 0:
-            self.activate()
+            return self.activate()
+        else:
+            return self.deactivate()
 
     def activate(self):
         self.active = True
+        return self.active
 
     def deactivate(self):
         self.active = False
+        return self.active
 
     def is_active(self):
         return self.active
@@ -47,3 +69,8 @@ class Product:
                 raise Exception("Sorry, chosen quantity bigger than exist!")
         except Exception as e:
             print(e)
+            return str(e)
+
+
+
+
