@@ -23,8 +23,8 @@ class Product:
             print("Error: ", str(e))
             self.price = 0
         try:
-            if quantity <= 0:
-                raise ValueError("Quantity should be > 0")
+            if quantity < 0:
+                raise ValueError("Quantity should be >= 0")
             self.quantity = quantity
         except ValueError as e:
             print("Error: ", str(e))
@@ -71,6 +71,35 @@ class Product:
             print(e)
             return str(e)
 
+class NonStockedProduct(Product):
+    def __init__(self, name, price):
+        super().__init__(name, price, quantity=0)
 
+    def buy(self, quantity):
+            purchase = quantity * self.price
+            return purchase
+
+
+class LimitedProduct(Product):
+    def __init__(self, name, price, quantity):
+        super().__init__(name, price, quantity)
+
+
+    def buy(self, quantity=1):
+        try:
+            if self.active is True:
+                self.quantity -= quantity
+                purchase = self.price
+                self.deactivate()
+                return purchase
+            else:
+                raise Exception("Sorry, you can order shipping only one time per order")
+        except Exception as e:
+            print(e)
+            return str(e)
+
+
+#shipping = LimitedProduct("Shipping", 50)
+#print(shipping.quantity)
 
 

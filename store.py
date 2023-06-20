@@ -47,7 +47,7 @@ class Store:
                 break
             purchase = self.list_of_products[int(item_buy) - 1].buy(int(self.amount_buy))
             try:
-                self.total_price += purchase * int(self.amount_buy)
+                self.total_price += purchase
                 print("Product added to list!")
             except TypeError:
                 print()
