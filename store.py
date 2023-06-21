@@ -1,7 +1,3 @@
-"""
-created a class Store,
-take a list of objects class Product as a parameter.
-"""
 class Store:
     def __init__(self, list_of_products):
         self.list_of_products = list_of_products
@@ -42,13 +38,26 @@ class Store:
         print("When you want to finish order, enter empty text.")
         while True:
             item_buy = input("Which product # do you want? ")
-            self.amount_buy = input("What amount do you want? ")
-            if item_buy == "" or self.amount_buy == "":
+            if not item_buy:
                 break
-            purchase = self.list_of_products[int(item_buy) - 1].buy(int(self.amount_buy))
-            try:
-                self.total_price += purchase
-                print("Product added to list!")
-            except TypeError:
-                print()
+            self.amount_buy = input("What amount do you want? ")
+            if not self.amount_buy:
+                break
+
+            product_index = int(item_buy) - 1
+            if 0 <= product_index < len(self.list_of_products):
+                product = self.list_of_products[product_index]
+                if product.is_active():
+                    quantity = int(self.amount_buy)
+                    purchase = product.buy(quantity)
+                    if isinstance(purchase, str):
+                        print(purchase)
+                    else:
+                        self.total_price += purchase
+                        print("Product added to list!")
+                else:
+                    print("Product is out of stock.")
+            else:
+                print("Invalid product number.")
+
         return f"Order made! Total payment: ${self.total_price}"

@@ -57,6 +57,7 @@ class Product:
     def show(self):
         print(f"{self.name}, Price: {self.price}, Quantity: {self.quantity}")
 
+
     def buy(self, quantity):
         try:
             if self.quantity >= quantity or quantity <= 0 or self.active is False:
@@ -84,22 +85,21 @@ class LimitedProduct(Product):
     def __init__(self, name, price, quantity):
         super().__init__(name, price, quantity)
 
-
-    def buy(self, quantity=1):
+    def buy(self, quantity):
         try:
-            if self.active is True:
+            if self.quantity >= quantity or quantity <= 0 or self.active is False:
                 self.quantity -= quantity
-                purchase = self.price
-                self.deactivate()
+                purchase = quantity * self.price
+                if self.quantity == 0:
+                    self.deactivate()
                 return purchase
             else:
-                raise Exception("Sorry, you can order shipping only one time per order")
+                raise Exception("Sorry, chosen quantity is bigger than what is available!")
         except Exception as e:
             print(e)
             return str(e)
 
 
-#shipping = LimitedProduct("Shipping", 50)
-#print(shipping.quantity)
+
 
 
