@@ -61,7 +61,11 @@ class Product:
         return self.active
 
     def show(self):
-        print(f"{self.name}, Price: {self.price}, Quantity: {self.quantity}")
+        if self.promotion is not None:
+            promotion_name = self.promotion.name
+        else:
+            promotion_name = None
+        print(f"{self.name}, Price: {self.price}, Quantity: {self.quantity}, Promotion: {promotion_name}")
 
     def set_promotion(self, promotion):
         self.promotion = promotion
@@ -71,7 +75,10 @@ class Product:
         try:
             if self.quantity >= self.order_quantity or self.order_quantity <= 0 or self.active is False:
                 self.quantity -= self.order_quantity
-                purchase = self.order_quantity * self.price - self.promotion.apply_promotion(self, self.order_quantity)
+                if self.promotion is not None:
+                    purchase = self.order_quantity * self.price - self.promotion.apply_promotion(self, self.order_quantity)
+                else:
+                    purchase = self.order_quantity * self.price
                 if self.quantity == 0:
                     self.deactivate()
                 return purchase
@@ -103,7 +110,10 @@ class LimitedProduct(Product):
         try:
             if self.quantity >= quantity or quantity <= 0 or self.active is False:
                 self.quantity -= quantity
-                purchase = quantity * self.price - self.promotion
+                if self.promotion is not None:
+                    purchase = quantity * self.price - self.promotion.apply_promotion(self, quantity)
+                else:
+                    purchase = quantity * self.price
                 if self.quantity == 0:
                     self.deactivate()
                 return purchase
